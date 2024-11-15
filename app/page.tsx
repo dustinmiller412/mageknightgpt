@@ -4,14 +4,28 @@ import Image from "next/image"
 import logo from "./assets/MageKnightLogo.png"
 import { useChat } from "ai/react"
 import { Message } from "ai"
+import Bubble from "./components/Bubble"
+import PromptSuggestionsRow from "./components/PromptSuggestionsRow";
+import LoadingBubble from "./components/LoadingBubble";
 
 const Home = () => {
-    const noMessages = true;
+
+    const handlePrompt = (promptText) => {
+        const msg: Message = {
+            id: crypto.randomUUID(),
+            content: promptText,
+            role: "user",
+        }
+        append(msg);
+    }
+
+    const { append, isLoading, messages, input, handleInputChange, handleSubmit } = useChat();
+    const noMessages = !messages || messages.length === 0;
 
     return (
         <main>
-            <Image src={logo} width="250" alt="Logo" />
-            <section>
+            <Image src={logo} width="250" alt="Logo"/>
+            <section className={noMessages ? "" : "populated"}>
                 {noMessages ? (
                     <>
                         <p className="starter-text">
@@ -19,12 +33,21 @@ const Home = () => {
                             Ask MageKnightGPT any question about how to play Mage Knight!
                         </p>
                         <br/>
-                        {/*<PromptSuggestionRow/>*/}
+                        <PromptSuggestionsRow onPromptClick={handlePrompt}/>
                     </>
                 ) : (
-                    <></>
+                    <>
+                        {/*map messages onto text bubbles*/}
+                        {messages.map((message,index) => <Bubble key={`message-${index}`} message={message} />)}
+                        {isLoading && <LoadingBubble/>}
+                    </>
                 )}
             </section>
+            <form onSubmit={handleSubmit}>
+                <input className="question-box" onChange={handleInputChange} value={input}
+                       placeholder="Ask me something..."/>
+                <input type="submit"/>
+            </form>
         </main>
     )
 }
