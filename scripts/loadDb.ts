@@ -19,10 +19,10 @@ const {
 const openai = new OpenAI({ apiKey: OPENAI_API_KEY });
 const client = new DataAPIClient(ASTRA_DB_APPLICATION_TOKEN);
 const db = client.db(ASTRA_DB_API_ENDPOINT, { keyspace: ASTRA_DB_NAMESPACE });
-const filepath = "app/assets/Mage-Knight-Board-Game-Ultimate-Edition-Rule-Book-September-2018.pdf";
+const filepath = "app/assets/Arcs_Base_Rulebook.pdf";
 
 const splitter = new RecursiveCharacterTextSplitter({
-    chunkSize: 1024,
+    chunkSize: 512,
     chunkOverlap: 100
 });
 

@@ -1,7 +1,7 @@
 "use client"
 
 import Image from "next/image"
-import logo from "./assets/MageKnightLogo.png"
+import logo from "./assets/Arcs-White.webp"
 import { useChat } from "ai/react"
 import { Message } from "ai"
 import Bubble from "./components/Bubble"
@@ -29,8 +29,8 @@ const Home = () => {
                 {noMessages ? (
                     <>
                         <p className="starter-text">
-                            The ultimate rules guide to Mage Knight: Ultimate Edition!
-                            Ask MageKnightGPT any question about how to play Mage Knight!
+                            The ultimate rules guide to Arcs: Conflcit & Collapse in the Reach!
+                            Ask ArcsGPT any question about how to play Arcs!
                         </p>
                         <br/>
                         <PromptSuggestionsRow onPromptClick={handlePrompt}/>

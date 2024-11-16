@@ -31,13 +31,13 @@ export async function POST(req: Request) {
         });
 
         try {
-            const collection = await db.collection(ASTRA_DB_COLLECTION)
+            const collection = await db.collection(ASTRA_DB_COLLECTION);
             const cursor = collection.find(null, {
-                sort: {
-                    $vector: embedding.data[0].embedding,
-                },
+               sort: {
+                   $vector: embedding.data[0].embedding,
+               },
                 limit: 10
-            })
+            });
 
             const documents = await cursor.toArray();
 
@@ -51,9 +51,9 @@ export async function POST(req: Request) {
 
         const template = {
             role: "system",
-            content: `You are an AI assistant who is an expert in board games, specifically the board game Mage Knight.
-            Use the below context to augment what you know about Mage Knight. The context will provide you with the rules
-            for Mage Knight Ultimate Edition. If the context doesn't include the information you need answer based on your
+            content: `You are an AI assistant who is an expert in board games, specifically the board game Arcs by Leder Games.
+            Use the below context to augment what you know about Leder Games and Arcs. The context will provide you with the rules
+            for Arcs. If the context doesn't include the information you need answer based on your
             existing knowledge and don't mention the source of your information or what the context does or does not include.
             Format responses using markdown where applicable and don't return images.
             -------------------

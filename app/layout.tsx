@@ -1,8 +1,8 @@
 import "./global.css"
 
 export const metadata = {
-    title: "MageKnightGPT",
-    description: "The place to go for Mage Knight questions"
+    title: "ArcsGPT",
+    description: "The place to go for Arcs questions"
 }
 
 const RootLayout = ({children}) => {

@@ -2,10 +2,10 @@ import PromptSuggestionButton from "./PromptSuggestionButton";
 
 const PromptSuggestionsRow = ({ onPromptClick }) => {
     const prompts = [
-        "If I go down a dungeon during the day, can I use black mana from the source?",
-        "If I attack a city, can I choose to fight only some of the enemies?",
-        "What do the 3 small coloured circles mean on the bottom of the Hero card?",
-        "If you defeat all enemies in the block phase using special abilities, do you still proceed to the attack phase?"
+        "What are the 7 action types?",
+        "What happens when a player provokes outrage?",
+        "How does a player seize the initiative?",
+        "Can you pick up ships during a catapult move?"
     ]
 
     return (
