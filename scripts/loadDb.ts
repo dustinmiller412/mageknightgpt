@@ -4,6 +4,7 @@ import OpenAI from "openai";
 import { RecursiveCharacterTextSplitter } from "langchain/text_splitter";
 import "dotenv/config";
 import fs from "fs";
+import path from "path";
 
 type SimilarityMetric = "dot_product" | "cosine" | "euclidean";
 
@@ -19,8 +20,9 @@ const {
 const openai = new OpenAI({ apiKey: OPENAI_API_KEY });
 const client = new DataAPIClient(ASTRA_DB_APPLICATION_TOKEN);
 const db = client.db(ASTRA_DB_API_ENDPOINT, { keyspace: ASTRA_DB_NAMESPACE });
-const filepath = "app/assets/Arcs_Base_Rulebook.pdf";
+// const filepath = "app/assets/Arcs_Base_Rulebook.pdf";
 
+const directoryPath = "app/assets/arcs";
 const splitter = new RecursiveCharacterTextSplitter({
     chunkSize: 512,
     chunkOverlap: 100
@@ -66,38 +68,54 @@ const loadSampleData = async () => {
     const collection = await db.collection(ASTRA_DB_COLLECTION);
 
     try {
-        // Check if file exists
-        if (!fs.existsSync(filepath)) {
-            throw new Error(`File not found at path: ${filepath}`);
+        // Read all PDFs from the directory
+        if (!fs.existsSync(directoryPath)) {
+            throw new Error(`Directory not found: ${directoryPath}`);
         }
 
-        // Load PDF using PDFLoader
-        const loader = new PDFLoader(filepath);
-        const docs = await loader.load();
-        console.log("Loaded Documents:", docs);
+        const pdfFiles = fs.readdirSync(directoryPath).filter(file => file.endsWith(".pdf"));
+        if (pdfFiles.length === 0) {
+            throw new Error("No PDF files found in the directory.");
+        }
 
-        const chunks = (await Promise.all(
-            docs.map(async doc => splitter.splitText(doc.pageContent))
-        ))
-            .flat() // Flatten the array of arrays
-            .filter(chunk => chunk.trim().length > 0); // Remove empty chunks
-        console.log(`Total chunks to be inserted: ${chunks.length}`);
+        console.log(`Found ${pdfFiles.length} PDF files.`);
 
-        // Insert chunks into Astra DB
-        for (const chunk of chunks) {
-            try {
-                const vector = await handleRequestWithRetry(chunk);
-                const res = await collection.insertOne({
-                    $vector: vector,
-                    text: chunk
-                });
-                console.log("Inserted record:", res);
-            } catch (insertError) {
-                console.error(`Error inserting chunk: ${insertError.message}`);
+        let totalChunks = 0;
+
+        for (const pdfFile of pdfFiles) {
+            const filepath = path.join(directoryPath, pdfFile);
+            console.log(`Processing file: ${filepath}`);
+
+            // Load PDF using PDFLoader
+            const loader = new PDFLoader(filepath);
+            const docs = await loader.load();
+            console.log(`Loaded Documents from ${pdfFile}:`, docs);
+
+            const chunks = (await Promise.all(
+                docs.map(async doc => splitter.splitText(doc.pageContent))
+            ))
+                .flat() // Flatten the array of arrays
+                .filter(chunk => chunk.trim().length > 0); // Remove empty chunks
+
+            console.log(`File ${pdfFile} split into ${chunks.length} chunks.`);
+            totalChunks += chunks.length;
+
+            // Insert chunks into Astra DB
+            for (const chunk of chunks) {
+                try {
+                    const vector = await handleRequestWithRetry(chunk);
+                    const res = await collection.insertOne({
+                        $vector: vector,
+                        text: chunk
+                    });
+                    console.log("Inserted record:", res);
+                } catch (insertError) {
+                    console.error(`Error inserting chunk from file ${pdfFile}: ${insertError.message}`);
+                }
             }
         }
 
-        console.log("All chunks successfully inserted into Astra DB.");
+        console.log(`All chunks from ${pdfFiles.length} files (${totalChunks} chunks) successfully inserted into Astra DB.`);
     } catch (error) {
         console.error("Error loading sample data:", error.message);
     }
