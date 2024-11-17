@@ -1,7 +1,7 @@
 "use client"
 
 import Image from "next/image"
-import logo from "./assets/Arcs-White.webp"
+import logo from "./assets/arcs/Arcs-Base-Logo-Black.png"
 import { useChat } from "ai/react"
 import { Message } from "ai"
 import Bubble from "./components/Bubble"
