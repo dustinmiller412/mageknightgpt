@@ -22,9 +22,9 @@ const client = new DataAPIClient(ASTRA_DB_APPLICATION_TOKEN);
 const db = client.db(ASTRA_DB_API_ENDPOINT, { keyspace: ASTRA_DB_NAMESPACE });
 // const filepath = "app/assets/Arcs_Base_Rulebook.pdf";
 
-const directoryPath = "app/assets/arcs";
+const directoryPath = "app/assets/dnd";
 const splitter = new RecursiveCharacterTextSplitter({
-    chunkSize: 512,
+    chunkSize: 1024,
     chunkOverlap: 100
 });
 

@@ -1,7 +1,7 @@
 "use client"
 
 import Image from "next/image"
-import logo from "./assets/arcs/Arcs-Base-Logo-Black.png"
+import logo from "./assets/dnd/logo.png"
 import { useChat } from "ai/react"
 import { Message } from "ai"
 import Bubble from "./components/Bubble"
@@ -29,8 +29,8 @@ const Home = () => {
                 {noMessages ? (
                     <>
                         <p className="starter-text">
-                            The ultimate rules guide to Arcs: Conflcit & Collapse in the Reach!
-                            Ask ArcsGPT any question about how to play Arcs!
+                            The ultimate rules guide to Dungeons & Dragons 5e!
+                            Ask DnDGPT any question about how to play Dungeons & Dragons!
                         </p>
                         <br/>
                         <PromptSuggestionsRow onPromptClick={handlePrompt}/>
