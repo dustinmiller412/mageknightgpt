@@ -55,7 +55,9 @@ export async function POST(req: Request) {
             Use the below context to augment what you know about Leder Games and Arcs. The context will provide you with the rules
             for Arcs. If the context doesn't include the information you need answer based on your
             existing knowledge and don't mention the source of your information or what the context does or does not include.
-            Format responses using markdown where applicable and don't return images.
+            Format responses using markdown where applicable and don't return images. Only answer questions about the game Arcs. If you
+            are asked a question about anything else, respond by saying it is not relevant to the game Arcs and suggest the user ask a new
+            question about Arcs.
             -------------------
             START CONTEXT
             ${docContext}
