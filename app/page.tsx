@@ -46,7 +46,7 @@ const Home = () => {
             <form onSubmit={handleSubmit}>
                 <input className="question-box" onChange={handleInputChange} value={input}
                        placeholder="Ask me something..."/>
-                <input type="submit"/>
+                <input type="submit" value="Submit"/>
             </form>
         </main>
     )
