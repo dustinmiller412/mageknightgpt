@@ -36,7 +36,7 @@ export async function POST(req: Request) {
                sort: {
                    $vector: embedding.data[0].embedding,
                },
-                limit: 10
+                limit: 5
             });
 
             const documents = await cursor.toArray();
@@ -72,7 +72,7 @@ export async function POST(req: Request) {
         const response = await openai.chat.completions.create({
             model: "gpt-4",
             stream: true,
-            messages: [template, ...messages]
+            messages: [template, ...messages],
         })
 
         const stream = OpenAIStream(response);
