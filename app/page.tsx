@@ -29,7 +29,7 @@ const Home = () => {
                 {noMessages ? (
                     <>
                         <p className="starter-text">
-                            The ultimate rules guide to Arcs: Conflcit & Collapse in the Reach!
+                            The ultimate rules guide to Arcs: Conflict & Collapse in the Reach!
                             Ask ArcsGPT any question about how to play Arcs!
                         </p>
                         <br/>

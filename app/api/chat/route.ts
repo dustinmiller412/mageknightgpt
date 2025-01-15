@@ -36,7 +36,7 @@ export async function POST(req: Request) {
                sort: {
                    $vector: embedding.data[0].embedding,
                },
-                limit: 5
+                limit: 10
             });
 
             const documents = await cursor.toArray();
@@ -73,6 +73,7 @@ export async function POST(req: Request) {
             model: "gpt-4",
             stream: true,
             messages: [template, ...messages],
+            max_tokens: 8000
         })
 
         const stream = OpenAIStream(response);
